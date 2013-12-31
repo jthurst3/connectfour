@@ -6,9 +6,10 @@
 
 # from win import *
 from pattern import *
+from sequence import *
 
 class Board:
-	def __init__(self, rows, columns):
+	def __init__(self, columns, rows):
 		if(columns < 4 or rows < 4):
 			print("Too few rows or columns.")
 			return;
@@ -23,6 +24,8 @@ class Board:
 		self.turn = 1
 		# the positions array will keep track of the legal places to place the next chip
 		self.positions = [0 for i in range(columns)]
+		# a 2D array representing the squares that a player can play in to win the game
+		self.winning_squares = [[], []]
 
 	# tries to put a piece into the relevant column on the board.
 	# returns a boolean: True if the piece is successfully placed on the board,

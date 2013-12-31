@@ -13,9 +13,10 @@ def pattern(playing_board, column, row, pattern):
 	return horizontal or vertical or up_diagonal or down_diagonal
 
 def pattern_vertical(playing_board, column, row, pattern):
-	if(playing_board.positions[column] < 4):
+	pos = playing_board.positions[column]
+	if(pos < 4):
 		return False
-	relevant_chips = playing_board.board[column][-4:]
+	relevant_chips = playing_board.board[column][pos-4:pos]
 	return relevant_chips == pattern
 
 def pattern_horizontal(playing_board, column, row, pattern):

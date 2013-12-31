@@ -7,27 +7,21 @@
 from board import *
 # from win import *
 from pattern import *
+from sequence import *
 
 def bestMove(player):
 	pass
 
 def main():
-	board = Board(6,7)
+	board = Board(7,6)
 	board.move(3)
 	board.move(4)
-	board.move(4)
-	board.move(4)
-	board.move(4)
-	board.move(4)
-	board.move(4)
+	board.move(3)
 	board.move(4)
 	board.move(3)
-	board.move(2)
-	board.move(2)
-	board.move(1)
-	board.move(1)
-	board.move(0)
-	print board.board
+	board.move(4)
+	board.move(3)
+	seq = Sequence(board, (3,0), 0)
 
 if __name__ == '__main__':
 	main()
