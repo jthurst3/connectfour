@@ -69,8 +69,6 @@ class Sequence:
 		self.get_unclaimed_squares()
 		# returns the square in which a player can play to win the game, if one exists
 		self.get_winning_square()
-		# returns a string representing the forced state of the sequence
-		self.get_force_category()
 
 	# updates the chip count in the sequence
 	def count_chips(self):
@@ -113,10 +111,6 @@ class Sequence:
 			print "Impossible to determine a basic category for this sequence."
 			self.category = ""
 			self.owner = 0
-
-	# updates the forced state of the sequence
-	def get_force_category(self):
-		pass # update later
 
 	# updates the winning square, if one exists
 	# A winning square exists if the sequence is "claimed" and the player who lays claim to the sequence has 3 chips in the sequence

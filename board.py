@@ -52,7 +52,7 @@ class Board:
 
 	# tries to put a piece into the relevant column on the board.
 	# returns a boolean: True if the piece is successfully placed on the board,
-	# false otherwise.
+	# False otherwise.
 	def move(self, column):
 		# columns and rows are numbered starting at 0.
 		# check if we entered a well-defined column
@@ -71,8 +71,16 @@ class Board:
 		self.positions[column] += 1
 		# update the relevant sequences,
 		self.update_sequences(column)
+		# update the winning squares,
+		self.update_winning_squares()
 		# and return True
 		return True
+
+	# attempts to make a sequence of moves
+	# returns a boolean: True if all the moves are legal, False otherwise.
+	def move_sequence(self, column_array):
+		moves = map(self.move, column_array)
+		return all(moves)
 
 	# calculates the available spaces for a player to play
 	def availableMoves(self):
@@ -178,6 +186,25 @@ class Board:
 		# update each sequence
 		for sequence in sequence_list:
 			sequence.update()
+
+	# recomputes the winning squares after a move
+	# should be called after positions array is updated
+	def update_winning_squares(self):
+		# clear the winning squares
+		self.winning_squares = [[], []]
+		# iterate over all sequences
+		for i in range(self.columns):
+			for j in range(self.rows):
+				for sequence in self.sequences[i][j]:
+					# for each sequence, add a winning square if one exists and is unique
+					if sequence.winning_square != (-1,-1):
+						player = sequence.owner
+						if sequence.winning_square not in self.winning_squares[player-1]:
+							self.winning_squares[player-1].append(sequence.winning_square)
+
+	
+
+
 
 
 
