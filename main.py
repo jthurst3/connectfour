@@ -21,7 +21,7 @@ def main():
 	board.move(3)
 	board.move(4)
 	board.move(3)
-	seq = Sequence(board, (3,0), 0)
+	print [board.find_sequence((i,1),1,0).category for i in range(4)]
 
 if __name__ == '__main__':
 	main()

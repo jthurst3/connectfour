@@ -53,21 +53,7 @@ class Sequence:
 
 
 	def direction_to_tuple(self):
-		# 0 represents vertical
-		if self.direction == 0:
-			self.direction_tuple = (0,1)
-		# 1 represents horizontal
-		elif self.direction == 1:
-			self.direction_tuple = (1,0)
-		# 2 represents upper-diagonal
-		elif self.direction == 2:
-			self.direction_tuple = (1,1)
-		# 3 represents lower-diagonal
-		elif self.direction == 3:
-			self.direction_tuple = (1,-1)
-		# any other number isn't a valid direction (we should have already checked for direction validity)
-		else:
-			self.direction_tuple = (0,0)
+		self.direction_tuple = direction_tuple(self.direction)
 
 	# updates the state of the sequence
 	def update(self):
@@ -152,8 +138,23 @@ class Sequence:
 		self.unclaimed_squares = [square for square in self.squares_in_sequence 
 			if self.playing_board.board[square[0]][square[1]] == 0]
 
-
-
+# returns a tuple representing the given direction
+def direction_tuple(direction):
+	# 0 represents vertical
+	if direction == 0:
+		return (0,1)
+	# 1 represents horizontal
+	elif direction == 1:
+		return (1,0)
+	# 2 represents upper-diagonal
+	elif direction == 2:
+		return (1,1)
+	# 3 represents lower-diagonal
+	elif direction == 3:
+		return (1,-1)
+	# any other number isn't a valid direction (we should have already checked for direction validity)
+	else:
+		return (0,0)
 
 
 
