@@ -1,5 +1,5 @@
-# main.py
-# runs the Connect Four program (solves the game)
+# connectfour.py
+# runs the Connect Four program (makes the game interactive)
 # J. Hassler Thurston
 # Connect Four
 # December 30, 2013
