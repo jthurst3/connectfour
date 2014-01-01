@@ -22,8 +22,15 @@ def compute_move(playing_board):
 		playing_board.move(move)
 		return True
 	# identify any combination of sequences, if they exist, where one of them can be won
+	compute_combinations(playing_board, playing_board.turn)
 	# identify such combinations of sequences for the opponent
-	# play the move that maximizes the state function for you
+	compute_combinations(playing_board, playing_board.opponent)
+	# check if we can play a move that's part of a winning combination
+	move = play_combination(playing_board)
+	if move != -1:
+		playing_board.move(move)
+		return True
+	# otherwise, play the move that maximizes the state function for you
 	playing_board.move(maximize_state_function(playing_board))
 	return True
 
@@ -50,6 +57,32 @@ def losing_square(playing_board):
 # calculates the available spaces for a player to play
 def availableMoves(playing_board):
 	return [(i, playing_board.positions[i]) for i in range(playing_board.columns) if playing_board.positions[i] < playing_board.rows]
+
+# checks to see if there are any winning combinations for a given player
+# for each pair of a player's claimed sequences, check if we can play a move that would win one of those sequences
+def compute_combinations(playing_board, player):
+	# get claimed sequences for the given player
+	claimed_sequences = find_sequences(playing_board, "Claimed " + str(player))
+	# compute pairs of these sequences
+	sequence_pairs = [(claimed_sequences[i], claimed_sequences[j]) for i in range(len(claimed_sequences))
+		for j in range(len(claimed_sequences)) if i < j]
+	# see how this pair can be made into a winning pair
+	# LEFT OFF HERE
+
+# returns all sequences on the board in the specified category
+def find_sequences(playing_board, category):
+	sequence_list = []
+	for i in range(playing_board.columns):
+		for j in range(playing_board.rows):
+			for sequence in playing_board.sequences[i][j]:
+				if sequence.category == category:
+					sequence_list.append(sequence)
+	return sequence_list
+
+# identifies a move that will lead to a win (if one exists)
+def play_combination(playing_board):
+	# default
+	return -1
 
 # calculates the state function for the board
 def state_function(playing_board):

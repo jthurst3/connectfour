@@ -27,7 +27,7 @@ class Board:
 		# nobody has won yet
 		self.winner = 0
 		# nobody has even moved yet
-		self.last_move = -1
+		self.move_history = []
 		# the positions array will keep track of the legal places to place the next chip
 		self.positions = [0 for i in range(columns)]
 		# a 2D array of all the well-defined sequences on the board
@@ -79,8 +79,8 @@ class Board:
 			return False
 		# If all is well, put the player's piece onto the board,
 		self.board[column][self.positions[column]] = self.turn
-		# set the last move to the current move
-		self.last_move = column
+		# add the move to the move history
+		self.move_history.append(column)
 		# change turns,
 		self.turn = (self.turn % 2) + 1
 		self.opponent = (self.opponent % 2) + 1
@@ -101,6 +101,41 @@ class Board:
 			return True
 		# and return True
 		return True
+
+	# takes back num_moves previous moves
+	def take_back_moves(self, num_moves):
+		# see if we can take back those moves
+		if num_moves > len(self.move_history):
+			print "Can't take back " + str(num_moves) + "."
+			return False
+		# if we want to take back the whole game, this is equivalent to starting a new game
+		if num_moves == len(self.move_history):
+			self.__init__(self.columns, self.rows)
+			return True
+		# # otherwise, get desired length of move history
+		desired_length = len(self.move_history) - num_moves
+		# # reset the board to one fewer move than desired
+		# for i in range(num_moves+1):
+		# 	self.reset_move()
+		# # get the column of the "last" move
+		# desired_column = self.move_history[desired_length-1]
+		# # update the move history
+		# self.move_history = self.move_history[0:desired_length-1]
+		# # then make the "last" move
+		# self.move(self.move_history[desired_length-1])
+		# temporary fix: start a new game and make the correct number of moves
+		move_hist = self.move_history[0:desired_length]
+		self.__init__(self.columns, self.rows)
+		self.move_sequence(move_hist)
+		# print the history of moves
+		print_array = [elem + 1 for elem in self.move_history]
+		print "History of moves: ", print_array
+
+	# # resets the board to the previous move
+	# def reset_move(self):
+	# 	column = self.move_history[-1]
+	# 	row = 
+	# 	self.board[column][self.positions[column]] = 0
 
 	# attempts to make a sequence of moves
 	# returns a boolean: True if all the moves are legal, False otherwise.
@@ -235,6 +270,7 @@ class Board:
 		self.sequences[starting_square[0]][starting_square[1]].remove(sequence)
 
 	# check if a player has won
+	# FIX so that this function references find_sequences() in compute_moves.py
 	def is_game_over(self):
 		# enumerate the sequences
 		for i in range(self.columns):
