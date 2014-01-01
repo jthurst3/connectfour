@@ -7,6 +7,8 @@
 # build up to this function
 def compute_move(playing_board):
 	# basic algorithm for computing a move:
+	# identify the available squares where we can play
+	squares 
 	# check if we can play in a winning square
 	# check if we can stop opponent from playing in a winning square
 	# identify any combination of sequences, if they exist, where one of them can be won
