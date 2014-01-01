@@ -132,6 +132,18 @@ class Sequence:
 		self.unclaimed_squares = [square for square in self.squares_in_sequence 
 			if self.playing_board.board[square[0]][square[1]] == 0]
 
+	# get the value of this sequence (to be added to the state function)
+	def get_value(self):
+		# unclaimed, dead, and impossible sequences are given a value of 0
+		if self.owner == 0:
+			return 0
+		# sequences owned by player 1 have value = the number of chips for player 1 in the sequence
+		elif self.owner == 1:
+			return self.chip_count[0]
+		# sequences owned by player 2 have value = minus the number of chips for player 2 in the sequence
+		else:
+			return -self.chip_count[1]
+
 # returns a tuple representing the given direction
 def direction_tuple(direction):
 	# 0 represents vertical

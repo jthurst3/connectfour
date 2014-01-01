@@ -62,6 +62,7 @@ def pattern_downDiagonal(playing_board, column, row, pattern):
 	return pattern in relevant_diagonal
 
 # checks if the player who last played in the given column has won the game by doing so
+# should be called after the positions array is updated
 def win(playing_board, column):
 	row = playing_board.positions[column]-1
 	player = playing_board.board[column][row]

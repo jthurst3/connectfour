@@ -7,6 +7,7 @@
 # from win import *
 from pattern import *
 from sequence import *
+from compute_moves import *
 
 class Board:
 	def __init__(self, columns, rows):
@@ -22,10 +23,19 @@ class Board:
 		self.board = [[0 for j in range(rows)] for i in range(columns)]
 		# The person playing first will be represented by a 1, and the second person by a 2.
 		self.turn = 1
+		self.opponent = 2
+		# nobody has won yet
+		self.winner = 0
+		# nobody has even moved yet
+		self.last_move = -1
 		# the positions array will keep track of the legal places to place the next chip
 		self.positions = [0 for i in range(columns)]
 		# a 2D array of all the well-defined sequences on the board
 		self.initSequences()
+		# an array representing the available squares for a player
+		self.available_squares = availableMoves(self)
+		# a similar array representing the available columns for a player
+		self.available_columns = [square[0] for square in self.available_squares]
 		# a 2D array representing the squares that a player can play in to win the game
 		self.winning_squares = [[], []]
 
@@ -54,6 +64,10 @@ class Board:
 	# returns a boolean: True if the piece is successfully placed on the board,
 	# False otherwise.
 	def move(self, column):
+		# check to see if someone has already won
+		if self.winner != 0:
+			print "Player " + str(self.winner) + " has already won."
+			return False
 		# columns and rows are numbered starting at 0.
 		# check if we entered a well-defined column
 		if(column < 0 or column >= self.columns):
@@ -65,14 +79,26 @@ class Board:
 			return False
 		# If all is well, put the player's piece onto the board,
 		self.board[column][self.positions[column]] = self.turn
+		# set the last move to the current move
+		self.last_move = column
 		# change turns,
 		self.turn = (self.turn % 2) + 1
+		self.opponent = (self.opponent % 2) + 1
 		# update the positions array,
 		self.positions[column] += 1
 		# update the relevant sequences,
 		self.update_sequences(column)
+		# update the available squares,
+		self.available_squares = availableMoves(self)
+		# update the available columns,
+		self.available_columns = [square[0] for square in self.available_squares]
 		# update the winning squares,
 		self.update_winning_squares()
+		# update the winner if someone has won,
+		if self.is_game_over():
+			self.winner = self.turn
+			print "Player " + str(self.winner) + " has just won!"
+			return True
 		# and return True
 		return True
 
@@ -207,6 +233,16 @@ class Board:
 		starting_square = sequence.startsquare
 		# remove it from the list
 		self.sequences[starting_square[0]][starting_square[1]].remove(sequence)
+
+	# check if a player has won
+	def is_game_over(self):
+		# enumerate the sequences
+		for i in range(self.columns):
+			for j in range(self.rows):
+				for sequence in self.sequences[i][j]:
+					if sequence.category == "Won" or sequence.category == "Lost":
+						return True
+		return False
 
 	###### STATISTICS
 	# count the total number of sequences on the board
