@@ -1,5 +1,6 @@
-connectfour: Python program to play/solve the Connect Four game
+connectfour
 ===========
+Python program to play/solve the Connect Four game
 
 install:
 ```sh
