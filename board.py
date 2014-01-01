@@ -96,7 +96,7 @@ class Board:
 		self.update_winning_squares()
 		# update the winner if someone has won,
 		if self.is_game_over():
-			self.winner = self.turn
+			self.winner = self.opponent # we switched whose turn it is
 			print "Player " + str(self.winner) + " has just won!"
 			return True
 		# and return True

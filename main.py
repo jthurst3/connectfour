@@ -49,7 +49,7 @@ def main():
 	print board.board
 
 if __name__ == '__main__':
-	play_human(2)
+	play_human(1)
 
 
 
