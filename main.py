@@ -14,8 +14,9 @@ def bestMove(player):
 
 def main():
 	board = Board(7,6)
+	print board.enumerate_sequences()
 	board.move_sequence([3,4,4,3,3,4,5,2,2,4,3,4,4,3,0,1,1,2])
-	print board.winning_squares
+	print board.winning_squares, board.num_sequences(), board.enumerate_sequences()
 
 if __name__ == '__main__':
 	main()

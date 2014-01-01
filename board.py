@@ -82,10 +82,6 @@ class Board:
 		moves = map(self.move, column_array)
 		return all(moves)
 
-	# calculates the available spaces for a player to play
-	def availableMoves(self):
-		return [i for i in range(self.columns) if self.positions[i] < self.rows]
-
 	# returns a list of sequences that have the given square in them
 	def find_sequences(self, square):
 		sequence_list = []
@@ -186,6 +182,9 @@ class Board:
 		# update each sequence
 		for sequence in sequence_list:
 			sequence.update()
+			# eliminate the dead sequences
+			if sequence.category == "Dead":
+				self.eliminate_sequence(sequence)
 
 	# recomputes the winning squares after a move
 	# should be called after positions array is updated
@@ -202,7 +201,26 @@ class Board:
 						if sequence.winning_square not in self.winning_squares[player-1]:
 							self.winning_squares[player-1].append(sequence.winning_square)
 
-	
+	# remove the given sequence from the list of sequences
+	def eliminate_sequence(self, sequence):
+		# find the sequence's starting square
+		starting_square = sequence.startsquare
+		# remove it from the list
+		self.sequences[starting_square[0]][starting_square[1]].remove(sequence)
+
+	###### STATISTICS
+	# count the total number of sequences on the board
+	def num_sequences(self):
+		total = 0
+		for i in range(self.columns):
+			for j in range(self.rows):
+				total += len(self.sequences[i][j])
+		return total
+	# count the number of sequences in each starting position
+	def enumerate_sequences(self):
+		return [[len(self.sequences[i][j]) for j in range(self.rows)] for i in range(self.columns)]
+
+
 
 
 
