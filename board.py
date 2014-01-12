@@ -13,6 +13,7 @@ class Board:
 	def __init__(self, columns, rows):
 		if(columns < 4 or rows < 4):
 			print("Too few rows or columns.")
+			self.successfulInit = False
 			return;
 		self.rows = rows
 		self.columns = columns
@@ -38,6 +39,8 @@ class Board:
 		self.available_columns = [square[0] for square in self.available_squares]
 		# a 2D array representing the squares that a player can play in to win the game
 		self.winning_squares = [[], []]
+		# this variable will be True if everything was initialized successfully
+		self.successfulInit = True
 
 	# initializes all well-defined sequences for the board
 	def initSequences(self):
