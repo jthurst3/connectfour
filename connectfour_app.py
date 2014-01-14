@@ -31,7 +31,7 @@ def internal_error(error):
 # 	'moves': array of all previous moves
 # }
 
-@app.route('/move', methods = ['GET'])
+@app.route('/move', methods = ['POST'])
 def make_move():
 	# check to see if JSON exists
 	if not request.json:
