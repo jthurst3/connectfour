@@ -11,22 +11,32 @@ from compute_moves import *
 
 import time
 
+# checks to see if user entered a valid integer
+# from http://stackoverflow.com/questions/1265665/python-check-if-a-string-represents-an-int-without-using-try-except
+def getInt(input_arg):
+	try:
+		user_input = raw_input(input_arg)
+		return int(user_input)
+	except ValueError:
+		print "Did not enter a valid integer."
+		return getInt(input_arg)
+
 # function that plays with a human
 def play_human():
 	# display a starting message
 	print "Starting game of connect four..."
 	# query the user whether they want to go first or second
-	human_player = int(raw_input("Do you want to go first or second? (Enter 1 or 2): "))
+	human_player = getInt("Do you want to go first or second? (Enter 1 or 2): ")
 	# initialize the board
 	board = Board(7,6)
 	exit_status = 0
 	while(exit_status == 0):
 		game_play(board, human_player)
-		take_back = int(raw_input("Press 1 to exit, or 0 to take back moves: "))
+		take_back = getInt("Press 1 to exit, or 0 to take back moves: ")
 		if take_back == 1:
 			exit_status = 1
 		else:
-			num_moves = int(raw_input("How many moves do you want to take back? "))
+			num_moves = getInt("How many moves do you want to take back? ")
 			board.take_back_moves(num_moves)
 
 
@@ -41,10 +51,10 @@ def game_play(playing_board, human_player):
 
 # queries the user for a move
 def query_move(playing_board):
-	column = int(raw_input("Your turn. Please enter your move (an open column between 1 and " + str(playing_board.columns) + ", 0 to take back moves): "))
+	column = getInt("Your turn. Please enter your move (an open column between 1 and " + str(playing_board.columns) + ", 0 to take back moves): ")
 	if column == 0:
 		# we're taking back some moves
-		num_moves = int(raw_input("How many moves do you want to take back? "))
+		num_moves = getInt("How many moves do you want to take back? ")
 		playing_board.take_back_moves(num_moves)
 		return True
 	playing_board.move(column-1)

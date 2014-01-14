@@ -68,17 +68,20 @@ class Board:
 	# False otherwise.
 	def move(self, column):
 		# check to see if someone has already won
-		if self.winner != 0:
+		if self.winner > 0:
 			print "Player " + str(self.winner) + " has already won."
+			return False
+		elif self.winner == -1:
+			print "Game is drawn."
 			return False
 		# columns and rows are numbered starting at 0.
 		# check if we entered a well-defined column
 		if(column < 0 or column >= self.columns):
-			print("Column " + str(column) + " doesn't exist.")
+			print("Column " + str(column+1) + " doesn't exist.")
 			return False
 		# check to see if that column is filled up
 		if(self.positions[column] == self.rows):
-			print("Column " + str(column) + " is filled up.")
+			print("Column " + str(column+1) + " is filled up.")
 			return False
 		# If all is well, put the player's piece onto the board,
 		self.board[column][self.positions[column]] = self.turn
@@ -97,6 +100,11 @@ class Board:
 		self.available_columns = [square[0] for square in self.available_squares]
 		# update the winning squares,
 		self.update_winning_squares()
+		# check for a draw,
+		if self.drawn():
+			self.winner = -1
+			print "Game is a draw."
+			return True
 		# update the winner if someone has won,
 		if self.is_game_over():
 			self.winner = self.opponent # we switched whose turn it is
@@ -271,6 +279,11 @@ class Board:
 		starting_square = sequence.startsquare
 		# remove it from the list
 		self.sequences[starting_square[0]][starting_square[1]].remove(sequence)
+
+	# check to see if the game is drawn
+	def drawn(self):
+		# check to see if the board is filled up
+		return all(self.positions[column] == self.rows for column in range(0,self.columns))
 
 	# check if a player has won
 	# FIX so that this function references find_sequences() in compute_moves.py
